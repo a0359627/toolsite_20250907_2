@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}製作二部工具網站{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'pages/css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="{% url 'zc_upload' %}">「還是你想被罵」上傳</a>
+                <a href="{% url 'zc_files' %}">「還是你想被罵」下載</a>
+            </nav>
+        </header>
+    
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    
+        <footer>
+            <p>&copy; {% now "Y" %} 製作二部工具網站</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+{% extends "pages/base.html" %}
+
+{% load static %}
+
+
+
+{% block title %}「還是你想被罵」上傳{% endblock %}
+
+
+
+{% block content %}
+
+<form style="display: none;">{% csrf_token %}</form>
+
+<h1>「還是你想被罵」上傳</h1>
+
+
+
+<!-- 底圖預覽區塊 -->
+
+<h2>選擇使用的底圖（最多 6 張）</h2>
+
+<div id="thumbnail-list" class="file-grid">
+
+  {% for bg in backgrounds %}
+
+  <div class="file-item" data-id="{{ bg.id }}">
+
+    <div class="thumbnail-wrapper">
+
+      <img src="{{ bg.image.url }}" alt="{{ bg.position }}">
+
+      <button class="delete-btn" onclick="deleteBackground({{ bg.id }}, this.closest('.file-item'))">✖</button>
+
+    </div>
+
+    <p class="position-label">{{ bg.get_position_display }}</p>
+
+  </div>
+
+  {% endfor %}
+
+</div>
+
+
+
+<!-- 底圖上傳區 -->
+
+<div class="upload-section">
+
+  <h3>底圖上傳（PNG, JPG）</h3>
+
+
+
+  <div class="radio-options">
+
+    <label><input type="radio" name="bg_type" value="left"> 左</label>
+
+    <label><input type="radio" name="bg_type" value="right"> 右</label>
+
+    <label><input type="radio" name="bg_type" value="normal" checked> 一般</label>
+
+  </div>
+
+
+
+  <div id="background-drop" class="drop-area" data-type="background">
+
+    <p>拖曳或點擊選擇底圖</p>
+
+    <input type="file" id="background-input" accept="image/png,image/jpeg">
+
+  </div>
+
+</div>
+
+
+
+<!-- 文件上傳區 -->
+
+<div class="upload-section">
+
+  <h3>文件上傳（DOCX, TXT）</h3>
+
+
+
+  <div id="file-preview" class="file-grid"></div>
+
+
+
+  <div id="doc-drop" class="drop-area" data-type="document">
+
+    <p>拖曳或點擊選擇文件</p>
+
+    <input type="file" id="doc-input" accept=".docx,.txt">
+
+  </div>
+
+</div>
+
+
+
+<!-- 確定按鈕 -->
+
+<div style="text-align: center; margin-top: 20px;">
+
+  <button id="submit-btn">確定送出</button>
+
+</div>
+
+
+
+<script src="{% static 'pages/js/upload-handler.js' %}"></script>
+
+{% endblock %}

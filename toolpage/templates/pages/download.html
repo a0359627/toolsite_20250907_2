@@ -1,0 +1,43 @@
+{% extends "pages/base.html" %}
+{% block title %}「還是你想被罵」下載{% endblock %}
+
+{% block content %}
+<h1>「還是你想被罵」下載</h1>
+<div class="file-grid">
+  {% for zip in zips %}
+  <div class="file-item" data-name="{{ zip.name }}">
+    <div class="thumbnail-wrapper zip-thumbnail">
+      <div class="zip-icon">.zip</div>
+      <button class="delete-btn" onclick="deleteZip('{{ zip.name }}', this.closest('.file-item'))">✖</button>
+    </div>
+    <p class="zip-label">{{ zip.name|slice:":8" }}{% if zip.name|length > 8 %}...{% endif %}</p>
+    <a href="{{ zip.path }}" class="download-btn">下載</a>
+  </div>
+  {% empty %}
+  <p>目前沒有可下載的壓縮檔。</p>
+  {% endfor %}
+</div>
+
+<script>
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  return parts.length === 2 ? parts.pop().split(';').shift() : '';
+}
+
+function deleteZip(name, element) {
+  fetch(`/files/delete/${name}/`, {
+    method: 'POST',
+    headers: { 'X-CSRFToken': getCookie('csrftoken') }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'success') {
+      element.remove();
+    } else {
+      alert('刪除失敗');
+    }
+  });
+}
+</script>
+{% endblock %}
