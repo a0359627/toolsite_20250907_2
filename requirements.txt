@@ -1,0 +1,6 @@
+Django
+python-docx
+Pillow
+pytz
+django-environ
+gunicorn
